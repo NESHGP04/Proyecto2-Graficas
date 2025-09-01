@@ -11,7 +11,13 @@ use crate::Cube;
 use crate::materials::Material;
 use crate::textures::Texture;
 
-pub struct Scene { pub cubes: Vec<Cube>, pub materials: Vec<Material>, pub sky_color_top: Vec3, pub sky_color_bottom: Vec3, pub textures: Vec<Option<Arc<Texture>>> }
+pub struct Scene { 
+    pub cubes: Vec<Cube>, 
+    pub materials: Vec<Material>, 
+    pub sky_color_top: Vec3, 
+    pub sky_color_bottom: Vec3, 
+    pub textures: Vec<Option<Arc<Texture>>>, 
+}
 
 impl Scene {
     pub fn new() -> Self {
@@ -39,9 +45,9 @@ pub fn make_scene() -> Scene {
     let mut materials = Vec::new();
     let mut textures: Vec<Option<Arc<Texture>>> = Vec::new();
     // load textures if exist (assets/textures/*.ppm)
-    let wood = Texture::load_ppm("assets/textures/wood.ppm").map(|t| Arc::new(t));
-    let fabric = Texture::load_ppm("assets/textures/fabric.ppm").map(|t| Arc::new(t));
-    let ceramic = Texture::load_ppm("assets/textures/ceramic.ppm").map(|t| Arc::new(t));
+    let wood = Texture::load_ppm("../assets/textures/wood.ppm").map(|t| Arc::new(t));
+    let fabric = Texture::load_ppm("../assets/textures/fabric.ppm").map(|t| Arc::new(t));
+    let ceramic = Texture::load_ppm("../assets/textures/ceramic.ppm").map(|t| Arc::new(t));
 
     // materials: push and remember index
     // 0: tabletop (wood)
@@ -54,6 +60,8 @@ pub fn make_scene() -> Scene {
     materials.push(Material::Metal{ albedo: Vec3::new(0.9,0.85,0.8), fuzz: 0.05 }); textures.push(None);
     // 4: window glass (dielectric)
     materials.push(Material::Dielectric{ ior: 1.5 }); textures.push(None);
+    // 5: light source (emissive)
+    materials.push(Material::Emissive{ color: Vec3::new(4.0,4.0,4.0) }); textures.push(None); //1.0, 0.9, 0.7
 
     let mut cubes = Vec::new();
     // table (large cube scaled thin)
@@ -64,6 +72,8 @@ pub fn make_scene() -> Scene {
     cubes.push(Cube{ min: Vec3::new(0.5, -0.39, 0.2), max: Vec3::new(0.8, -0.15, 0.5), mat_id:2 });
     // lamp (hanging metal cube)
     cubes.push(Cube{ min: Vec3::new(-0.1, 0.6, -0.1), max: Vec3::new(0.1, 0.8, 0.1), mat_id:3 });
+    // light source (emissive)
+    cubes.push(Cube{ min: Vec3::new(-0.05, 0.81, -0.05), max: Vec3::new(0.05, 0.85, 0.05), mat_id:5 });
     // window (glass)
     cubes.push(Cube{ min: Vec3::new(1.2, -0.3, -1.6), max: Vec3::new(1.8, 1.2, 1.6), mat_id:4 });
     // cushion

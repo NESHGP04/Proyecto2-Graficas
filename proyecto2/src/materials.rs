@@ -14,5 +14,6 @@ pub enum Material {
     Lambert { albedo: Vec3, texture: Option<Arc<Texture>> },
     Metal { albedo: Vec3, fuzz: f64 },
     Dielectric { ior: f64 },
+    Emissive { color: Vec3 }, // Luz emitida
 }
 

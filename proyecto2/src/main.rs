@@ -44,5 +44,5 @@ fn main() {
     let lookat = crate::core::Vec3::new(0.0, -0.2, 0.0);
     let cam = Arc::new(Camera::new(lookfrom, lookat, crate::core::Vec3::new(0.0,1.0,0.0), 40.0, width as f64 / height as f64));
 
-    render_image(width, height, samples, max_depth, scene, cam, "outputs/cozy_cafe.ppm");
+    render_image(width, height, samples, max_depth, scene, cam, "outputs/cozy.ppm");
 }

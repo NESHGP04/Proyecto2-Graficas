@@ -117,6 +117,11 @@ pub fn color_at(ray: &Ray, scene: &Scene, depth: usize, rng: &mut Rng) -> Vec3 {
 
                 return color_at(&scattered_ray, scene, depth-1, rng);
             }
+
+            //Luz interior
+            Material::Emissive { color } => {
+                return *color;
+            }
         }
 
     }
