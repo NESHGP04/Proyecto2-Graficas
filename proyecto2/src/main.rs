@@ -1,48 +1,79 @@
-// raytracer_cozy_cafe.rs
-// Single-file CPU path tracer in Rust (no external crates)
-// Produces a PPM image. Textures must be PPM (P3) files placed in `assets/textures/`.
-// Features implemented:
-// - Camera (perspective)
-// - Axis-aligned cubes (AABB intersection + face-based UV mapping)
-// - Materials: Lambertian (with texture), Metal (reflection), Dielectric (refraction)
-// - Skybox (simple gradient)
-// - Multithreaded tile renderer using std::thread and available_parallelism
-// - Simple BVH-like spatial grouping (optional naive split)
-// - Animation hooks (camera rotation/dolly) are present but this starter renders a single frame.
-
-use std::fs::File;
-use std::io::{BufRead, BufReader, Write};
-use std::sync::{Arc, Mutex};
-use std::thread;
-use std::time::Instant;
-use std::ops::{Add, Sub, Mul, Div, Neg};
-
-mod bvh;
+mod vec3;
+mod ray;
 mod camera;
-mod materials;
-mod render;
-mod scene;
-mod textures;
-mod shapes;
-mod core;
+mod cube;
+mod light;
+mod raytracer;
 
-use crate::camera::Camera;
-use crate::materials::Material;
-use crate::scene::{Scene, make_scene};
-use crate::render::{render_image, color_at};
-use crate::shapes::cube::Cube;
-use crate::textures::Texture;
+pub mod texture;
+
+use raylib::prelude::*;
+use raytracer::RayTracer;
+
+const WINDOW_WIDTH: i32 = 800;
+const WINDOW_HEIGHT: i32 = 700;
 
 fn main() {
-    let width = 800;
-    let height = 450;
-    let samples = 40;
-    let max_depth = 6;
+    let (mut rl, thread) = raylib::init()
+        .size(WINDOW_WIDTH, WINDOW_HEIGHT)
+        .title("Cube Ray Tracer with Shadows")
+        .build();
 
-    let scene = Arc::new(make_scene());
-    let lookfrom = crate::core::Vec3::new(0.0, 0.3, 4.0);
-    let lookat = crate::core::Vec3::new(0.0, -0.2, 0.0);
-    let cam = Arc::new(Camera::new(lookfrom, lookat, crate::core::Vec3::new(0.0,1.0,0.0), 40.0, width as f64 / height as f64));
+    rl.set_target_fps(60);
 
-    render_image(width, height, samples, max_depth, scene, cam, "outputs/cozy.ppm");
+    // Create raytracer
+    let raytracer = RayTracer::new(WINDOW_WIDTH as u32, WINDOW_HEIGHT as u32);
+    
+    println!("Starting ray tracing...");
+    let start_time = std::time::Instant::now();
+    
+    // Render the scene
+    let pixel_data = raytracer.render();
+    
+    let render_time = start_time.elapsed();
+    println!("Ray tracing in {:.2}s", render_time.as_secs_f32());
+
+    // Create image from pixel data using the correct function name
+    let mut image = Image::gen_image_color(WINDOW_WIDTH, WINDOW_HEIGHT, Color::BLACK);
+    
+    // Copy our rendered pixels to raylib image
+    unsafe {
+        let image_data = std::slice::from_raw_parts_mut(
+            image.data as *mut u8,
+            (WINDOW_WIDTH * WINDOW_HEIGHT * 4) as usize,
+        );
+        image_data.copy_from_slice(&pixel_data);
+    }
+
+    // Create texture from image - handle the Result properly
+    let texture = rl.load_texture_from_image(&thread, &image).expect("Failed to create texture");
+
+    // Main game loop
+    while !rl.window_should_close() {
+        let mut d = rl.begin_drawing(&thread);
+        
+        d.clear_background(Color::BLACK);
+        
+        // Draw the ray traced image
+        d.draw_texture(&texture, 0, 0, Color::WHITE);
+        
+        // Draw some UI text
+        d.draw_text(
+            &format!("Cube Ray Tracer - Rendered in {:.2}s", render_time.as_secs_f32()),
+            10,
+            10,
+            20,
+            Color::WHITE,
+        );
+        
+        d.draw_text(
+            "ESC to exit",
+            10,
+            WINDOW_HEIGHT - 30,
+            20,
+            Color::WHITE,
+        );
+    }
+    
+    println!("Ray tracer finished!");
 }
