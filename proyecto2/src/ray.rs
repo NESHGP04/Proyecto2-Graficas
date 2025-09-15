@@ -1,4 +1,5 @@
 use crate::vec3::Vector3;
+use crate::material::Material;
 
 #[derive(Debug, Clone, Copy)]
 pub struct Ray {
@@ -8,9 +9,9 @@ pub struct Ray {
 
 impl Ray {
     pub fn new(origin: Vector3, direction: Vector3) -> Self {
-        Ray { 
-            origin, 
-            direction: direction.normalize() 
+        Ray {
+            origin,
+            direction: direction.normalize(),
         }
     }
 
@@ -19,13 +20,14 @@ impl Ray {
     }
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone)]
 pub struct HitRecord {
     pub point: Vector3,
     pub normal: Vector3,
     pub t: f32,
     pub front_face: bool,
     pub material_color: Vector3,
+    pub material: Option<Material>, // Agregado para soporte de materiales avanzados
 }
 
 impl HitRecord {
@@ -36,15 +38,16 @@ impl HitRecord {
             t,
             front_face: true,
             material_color,
+            material: None,
         }
     }
 
     pub fn set_face_normal(&mut self, ray: &Ray, outward_normal: Vector3) {
         self.front_face = ray.direction.dot(outward_normal) < 0.0;
-        self.normal = if self.front_face { 
-            outward_normal 
-        } else { 
-            -outward_normal 
+        self.normal = if self.front_face {
+            outward_normal
+        } else {
+            -outward_normal
         };
     }
 }
