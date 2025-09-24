@@ -31,6 +31,7 @@ impl Scene {
             ),
             // Skybox de cafetería
             skybox: Skybox::coffee_shop(),
+            // skybox: Skybox::dramatic_sky(),
         }
     }
 

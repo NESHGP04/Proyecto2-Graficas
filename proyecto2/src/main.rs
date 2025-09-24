@@ -4,9 +4,9 @@ mod camera;
 mod cube;
 mod light;
 mod raytracer;
-mod material;     // NUEVO
-mod skybox;       // NUEVO
-mod cafe_scene;   // NUEVO
+mod material;     
+mod skybox;       
+mod cafe_scene;   
 pub mod texture;
 
 use raylib::prelude::*;
@@ -22,7 +22,7 @@ fn main() {
         .title("Cafetería Ray Tracer - Proyecto de Gráficas")
         .build();
 
-    rl.set_target_fps(30); // Reducido para mejor performance con efectos
+    rl.set_target_fps(30);
 
     // Create raytracer
     let mut raytracer = RayTracer::new(WINDOW_WIDTH as u32, WINDOW_HEIGHT as u32);
@@ -88,20 +88,16 @@ fn main() {
         );
         
         // Efectos implementados
-        d.draw_text("🎬 EFECTOS ACTIVOS:", 10, WINDOW_HEIGHT - 140, 14, Color::YELLOW);
-        d.draw_text("🪞 Reflexión (Cafetera)", 10, WINDOW_HEIGHT - 120, 12, Color::WHITE);
-        d.draw_text("🔍 Refracción (Display)", 10, WINDOW_HEIGHT - 105, 12, Color::WHITE);
-        d.draw_text("🌅 Skybox Dinámico", 10, WINDOW_HEIGHT - 90, 12, Color::WHITE);
-        d.draw_text("🎥 Cámara Rotativa", 10, WINDOW_HEIGHT - 75, 12, Color::WHITE);
-        d.draw_text("🎨 5 Materiales", 10, WINDOW_HEIGHT - 60, 12, Color::WHITE);
+        d.draw_text("EFECTOS ACTIVOS:", 10, WINDOW_HEIGHT - 140, 14, Color::YELLOW);
+        d.draw_text("Reflexión (Cafetera)", 10, WINDOW_HEIGHT - 120, 12, Color::WHITE);
+        d.draw_text("Refracción (Display)", 10, WINDOW_HEIGHT - 105, 12, Color::WHITE);
+        d.draw_text("Skybox Dinámico", 10, WINDOW_HEIGHT - 90, 12, Color::WHITE);
+        d.draw_text("Cámara Rotativa", 10, WINDOW_HEIGHT - 75, 12, Color::WHITE);
+        d.draw_text("5 Materiales", 10, WINDOW_HEIGHT - 60, 12, Color::WHITE);
         
         // Controles
-        d.draw_text("📋 CONTROLES:", 10, WINDOW_HEIGHT - 40, 12, Color::LIME);
+        d.draw_text("CONTROLES:", 10, WINDOW_HEIGHT - 40, 12, Color::LIME);
         d.draw_text("ESC - Salir", 10, WINDOW_HEIGHT - 25, 11, Color::WHITE);
-        
-        // Puntuación estimada
-        let score_text = "📊 PUNTOS ESTIMADOS: ~95/100";
-        d.draw_text(score_text, WINDOW_WIDTH - 250, 10, 14, Color::GREEN);
         
         frame_count += 1;
     }

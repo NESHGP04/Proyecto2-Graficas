@@ -20,6 +20,7 @@ pub enum MaterialType {
     Glass,
     Ceramic,
     Tile,
+    Chocolate
 }
 
 impl Material {
@@ -85,6 +86,19 @@ impl Material {
             refractive_index: 1.0,
             texture,
             material_type: MaterialType::Tile,
+        }
+    }
+
+    // Material de chocolate (para postres y decoración)
+    pub fn chocolate(texture: Option<Texture>) -> Self {
+        Material {
+            albedo: Vector3::new(0.4, 0.25, 0.15),  // Marrón chocolate oscuro
+            specular: 0.6,                          // Brillo característico del chocolate
+            transparency: 0.0,                      // Completamente opaco
+            reflectivity: 0.15,                     // Reflectividad moderada (chocolate pulido)
+            refractive_index: 1.0,
+            texture,
+            material_type: MaterialType::Chocolate,
         }
     }
 

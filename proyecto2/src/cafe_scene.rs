@@ -21,11 +21,17 @@ impl CafeScene {
         let metal_material = Material::metal(Some(Texture::load("../assets/metal.png")));
         
         // Material de vidrio para display (con refracción)
-        let glass_material = Material::glass(None);
+        // let glass_material = Material::glass(None);
+        let glass_material = Material::metal(Some(Texture::load("../assets/glass.png")));
         
         // Material cerámico para tazas y postres
         let ceramic_material = Material::ceramic(Some(Texture::load("../assets/ceramic.png")));
-        
+
+        //Material chocolatoso para postres
+        let chocolate_material = Material::chocolate(Some(Texture::load("../assets/chocolate.png")));
+        // O sin textura:
+        let chocolate_material = Material::chocolate(None);
+
         // Material de baldosas para piso
         let tile_material = Material::tile(Some(Texture::load("../assets/tiles.png")));
 
@@ -87,10 +93,15 @@ impl CafeScene {
         ));
         
         // Postre 1
+        // cubes.push(Cube::new(
+        //     Vector3::new(-1.8, 0.8, 0.3),
+        //     Vector3::new(-1.5, 0.95, 0.6),
+        //     ceramic_material.clone(),
+        // ));
         cubes.push(Cube::new(
             Vector3::new(-1.8, 0.8, 0.3),
             Vector3::new(-1.5, 0.95, 0.6),
-            ceramic_material.clone(),
+            chocolate_material.clone(), // ¡Ahora es de chocolate!
         ));
 
         // === MESA 2 (Derecha) ===
@@ -147,10 +158,15 @@ impl CafeScene {
         ));
         
         // Postre 2
+        // cubes.push(Cube::new(
+        //     Vector3::new(2.2, 0.8, 0.3),
+        //     Vector3::new(2.5, 0.95, 0.6),
+        //     ceramic_material.clone(),
+        // ));
         cubes.push(Cube::new(
             Vector3::new(2.2, 0.8, 0.3),
             Vector3::new(2.5, 0.95, 0.6),
-            ceramic_material.clone(),
+            chocolate_material.clone(),
         ));
 
         // === MOSTRADOR PRINCIPAL (Centro-derecha) ===
@@ -172,17 +188,17 @@ impl CafeScene {
         cubes.push(Cube::new(
             Vector3::new(0.2, 1.1, 2.8),
             Vector3::new(0.5, 1.25, 3.1),
-            ceramic_material.clone(),
+            chocolate_material.clone(),
         ));
         cubes.push(Cube::new(
             Vector3::new(0.8, 1.1, 2.9),
             Vector3::new(1.1, 1.3, 3.2),
-            ceramic_material.clone(),
+            chocolate_material.clone(),
         ));
         cubes.push(Cube::new(
             Vector3::new(1.2, 1.1, 2.8),
             Vector3::new(1.4, 1.2, 3.0),
-            ceramic_material.clone(),
+            chocolate_material.clone(),
         ));
 
         // === MOSTRADOR DE FONDO ===
