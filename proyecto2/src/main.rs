@@ -78,12 +78,12 @@ fn main() {
         
         // UI Information
         d.draw_text(
-            "🏪 CAFETERÍA RAY TRACER",
+            "CAFETERÍA RAY TRACER",
             10, 10, 20, Color::WHITE,
         );
         
         d.draw_text(
-            &format!("⏱️  Tiempo: {:.1}s | Frame: {}", elapsed_time, frame_count),
+            &format!("Tiempo: {:.1}s | Frame: {}", elapsed_time, frame_count),
             10, 35, 16, Color::WHITE,
         );
         
